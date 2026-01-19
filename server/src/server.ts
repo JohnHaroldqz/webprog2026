@@ -1,11 +1,13 @@
 import express, { type Application, type Request, type Response } from "express";
 import { randomBytes } from "node:crypto";
 
+process.loadEnvFile();
+
 const app: Application = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World with TypeScript and Express!");
+  res.send("Hello World with TypeScript and Express!!!!");
 });
 
 app.get('/about', (req, res) => {
