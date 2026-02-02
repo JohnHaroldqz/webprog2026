@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express"
-import Product from "../models/products.ts";
+import Product from "../models/product.ts";
 
 export const getProducts: RequestHandler = async (req, res) => {
     let params: any = {}
@@ -32,15 +32,36 @@ export const getProduct: RequestHandler = async (req, res) => {
 
 export const addProduct: RequestHandler = async (req, res) => {
     console.log(req.body)
-    const product = await Product.create({
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        qty: req.body.qty,
-    })
-    console.log('Created product:', product);
-
-    res.send(product)
+    // use validation framework later
+    if (req.body.name === undefined || req.body.name === '') {
+        res.status(422).send()
+        return
+    }
+    try {
+        const product = await Product.create({
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            qty: req.body.qty,
+        })
+        console.log('Created product:', product);
+        res.status(201).send(product)
+    } catch (err: any) {
+        if (err.code === 11000) {
+            // Handle the duplicate key error
+            res.status(409).json({
+                error: true,
+                message: "Duplicate record found: A document with this unique field already exists."
+            });
+        } else {
+            // Handle other potential errors
+            console.error(err);
+            res.status(500).json({
+                error: true,
+                message: "An unexpected error occurred."
+            });
+        }
+    }
 }
 
 export const updateProduct: RequestHandler = async (req, res) => {
@@ -52,6 +73,8 @@ export const updateProduct: RequestHandler = async (req, res) => {
         description: req.body.description,
         price: req.body.price,
         qty: req.body.qty,
+    }, {
+        returnDocument: 'after'
     })
     console.log('Updated product:', product);
 
