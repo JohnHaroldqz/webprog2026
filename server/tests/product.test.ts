@@ -125,5 +125,13 @@ describe("Product API PUT", () => {
     expect(result.status).toBe(200)
     expect(result.body.name).toBe('Test Product')
   });
+ 
+  it("should return 404 when deleting a non-existing product", async () => {
+    await supertest(app)
+      .delete(`/api/products/${productId}`)
+      .expect(404); 
+  });
 
 });
+
+
