@@ -1,16 +1,18 @@
 import { useLocation, useNavigate, useParams } from "react-router"
 
 import { Box, Button, TextField, Typography } from "@mui/material"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { createPost, updatePost } from "../services/PostsService"
+import { Editor } from "@tinymce/tinymce-react"
 
 function PostsAddEdit() {
 
     const { id } = useParams()
     const navigate = useNavigate()
     const location = useLocation()
-    console.log(location.state)
+    //console.log(location.state)
     const isNew = id === 'new'
+    const editorRef = useRef(null)
 
     const [post, setPost] = useState(isNew ? {
         user_id: '',
@@ -27,7 +29,7 @@ function PostsAddEdit() {
         content?: {
             message: string
         },
-     }>({})
+    }>({})
     const [error, setError] = useState('')
 
     function save() {
@@ -37,7 +39,7 @@ function PostsAddEdit() {
             createPost(post).then(response => {
                 // message TODO
                 console.log(response)
-                navigate('/posts')
+                navigate('/blog')
             }).catch(error => {
                 console.log(error)
                 console.log(error.response)
@@ -118,25 +120,37 @@ function PostsAddEdit() {
             helperText={errors.title?.message}
             sx={{ m: 1 }}
         />
-        <TextField
-            id="content"
-            fullWidth
-            label="Content"
-            variant="outlined"
-            value={post.content}
-            onChange={event => {
-                setPost({
-                    ...post, content: event.target.value
-                })
-            }}
-            error={errors.content !== undefined}
-            helperText={errors.content?.message}
-            sx={{ m: 1 }}
-            multiline
-            minRows={5}
-        />
+        <Box sx={{ ml: 1 }}>
+            <Editor
+                tinymceScriptSrc={`/tinymce/tinymce.min.js`}
+                onInit={(_evt: any, editor: any) => editorRef.current = editor}
+                value={post.content}
+                onEditorChange={(content: string) => {
+                    setPost({
+                        ...post, content: content
+                    })
+                }}
+                init={{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount', 'charmap', 'emoticons'
+                    ],
+                    toolbar: 'undo redo fullscreen | bold italic underline cut copy paste | link unlink strikethrough superscript subscript | ' +
+                        'highlight forecolor backcolor removeformat search  | ' +
+                        'align numlist bullist outdent indent image media | ' +
+                        'styles fontsizeinput lineheight | ' +
+                        'table hr charmap emoticons anchor | ' +
+                        'detectverse code preview help',
+                    toolbar_mode: 'sliding',
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                }}
+            />
+        </Box>
         <Typography color='error'>{error}</Typography>
-        <Button variant="outlined" sx={{ m: 1 }} onClick={() => navigate('/posts')}>
+        <Button variant="outlined" sx={{ m: 1 }} onClick={() => navigate('/blog')}>
             Cancel
         </Button>
         <Button variant="contained" sx={{ m: 1 }} onClick={() => save()}>

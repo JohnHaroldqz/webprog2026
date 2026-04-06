@@ -137,7 +137,9 @@ function Posts() {
                             </TableCell>
                             <TableCell>{post.title}</TableCell>
                             <TableCell>{format(parseISO(post.createdAt ?? 'daya'), 'MMM d, yyyy')}</TableCell>
-                            <TableCell>{post.content}</TableCell>
+                            <TableCell>
+                                <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+                            </TableCell>
                             <TableCell>
                                 <Button onClick={() => navigate(`/blog/${post._id}`, { state: post })}>Edit</Button>
                             </TableCell>
