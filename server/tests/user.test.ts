@@ -1,13 +1,22 @@
-import request from "supertest";
+import supertest from "supertest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { app } from "../src/server.ts";
 import {
   connectToDatabase,
   disconnectFromDatabase,
   clearCollections,
 } from "../src/db.ts";
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@jest/globals";
+import { Types } from "mongoose";
+import User from "../src/models/users.ts";
+import e from "express";
 
-describe("User API", () => {
+// silence console.log and console.error
+jest.spyOn(console, "log").mockImplementation(() => {});
+jest.spyOn(console, "error").mockImplementation(() => {});
+
+describe("User API PUT", () => {
+  const userId = "c3fe7eb8076e4de58d8d87c5";
+
   beforeAll(async () => {
     await connectToDatabase();
   });
@@ -20,87 +29,244 @@ describe("User API", () => {
     await clearCollections();
   });
 
-  const userData = {
-    user_name: "Test User",
-    email: "test@example.com",
-    password: "password123",
-  };
+  it("should get a user", async () => {
+    const user = {
+      name: "Test User",
+      email: "Test email",
+      password: 100,
+      content: 5
+    };
+    const newUser = await User.create(user)
 
-  let userId: string;
+    const result = await supertest(app)
+      .get(`/api/users/${newUser._id}`)
+      .send()
+    expect(result.status).toBe(200)
+    expect(result.body._id.toString()).toBe(newUser._id.toString())
+    expect(result.body.name).toBe(newUser.name)
+    expect(result.body.email).toBe(newUser.email)
+    expect(result.body.password).toBe(newUser.password)
+  })
+
+  it("should get users", async () => {
+    const users = [{
+      name: "Test User",
+      email: "Test email",
+      password: 100,
+      content: 5
+    }, {
+      name: "Another User",
+      email: "Another email",
+      password: 67,
+      content: 10
+    }]
+    await User.create(users[0])
+    await User.create(users[1])
+
+    const result = await supertest(app)
+      .get(`/api/users`)
+      .send()
+    expect(result.status).toBe(200)
+    expect(result.body.length).toBe(2)
+    expect(result.body[0].name).toBe(users[0].name)
+    expect(result.body[1].name).toBe(users[1].name)
+  })
+
+  it("should validate a user for required all fields", async () => {
+    const user = {
+    }
+
+    const result = await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      expect(result.status).toBe(422)
+      expect(result.body._message).toBe("User validation failed")
+      expect(result.body.message).toBe("User validation failed: name: Name is required, email: Email is required, password: Password is required, content: Quantity is required")
+  });
+
+  it("should validate a user for required name", async () => {
+    const user = {
+      email: "Test email",
+      password: 100,
+      content: 5
+    };
+
+    const result = await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      expect(result.status).toBe(422)
+      expect(result.body._message).toBe("User validation failed")
+      expect(result.body.message).toBe("User validation failed: name: Name is required")
+  });
+
+  it("should validate a user for required email", async () => {
+    const user = {
+      name: "Test User",
+      password: 100,
+      content: 5
+    };
+
+    const result = await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      expect(result.status).toBe(422)
+      expect(result.body._message).toBe("User validation failed")
+      expect(result.body.message).toBe("User validation failed: email: Email is required")
+  });
+
+  it("should validate a user for required password", async () => {
+    const user = {
+      name: "Test User",
+      email: "Test email",
+      content: 5
+    };
+
+    const result = await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      expect(result.status).toBe(422)
+      expect(result.body._message).toBe("User validation failed")
+      expect(result.body.message).toBe("User validation failed: password: Password is required")
+  });
+
+  it("should validate a user for required quantity", async () => {
+    const user = {
+      name: "Test User",
+      email: "Test email",
+      password: 100
+    };
+
+    const result = await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      expect(result.status).toBe(422)
+      expect(result.body._message).toBe("User validation failed")
+      expect(result.body.message).toBe("User validation failed: content: Quantity is required")
+
+  });
+
+  it("should validate a user for minimum quantity", async () => {
+    const user = {
+      name: "Test User",
+      email: "Test email",
+      password: 100,
+      content: 0
+    };
+
+    const result = await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      expect(result.status).toBe(422)
+      expect(result.body._message).toBe("User validation failed")
+      expect(result.body.message).toBe("User validation failed: content: Quantity must be at least 1")
+  });
 
   it("should create a user", async () => {
-    const res = await request(app)
-      .post("/api/users")
-      .send(userData);
+    const user = {
+      name: "Test User",
+      email: "Test email",
+      password: 100,
+      content: 5
+    };
 
-    expect(res.status).toBe(201);
-    expect(res.body.email).toBe(userData.email);
-    userId = res.body._id;
+    await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      .expect(201);
   });
 
-  it("should not create user with duplicate email", async () => {
-    await request(app).post("/api/users").send(userData);
+  it("should not create a duplicate user", async () => {
+    const user = {
+      name: "Test User",
+      email: "Test email",
+      password: 100,
+      content: 5
+    };
 
-    const res = await request(app)
-      .post("/api/users")
-      .send(userData);
-
-    expect(res.status).toBe(409);
+    await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      .expect(201);
+    await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      .expect(409);
   });
 
-  it("should not create user with missing fields", async () => {
-    const res = await request(app)
-      .post("/api/users")
-      .send({ email: "missing@test.com" });
+  it("should not create a user without name", async () => {
+    const user = {
+      email: "Test email",
+      password: 100,
+      content: 5
+    };
 
-    expect(res.status).toBe(422);
+    await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+      .expect(422);
   });
 
-  it("should get all users", async () => {
-    await request(app).post("/api/users").send(userData);
+  it("should update the user", async () => {
+    const user = {
+      name: "Test User",
+      email: "Test email",
+      password: 1,
+      content: 1
+    };
 
-    const res = await request(app).get("/api/users");
+    let result = await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+    expect(result.status).toBe(201)
 
-    expect(res.status).toBe(200);
-    expect(res.body.length).toBe(4);
+    user.name = 'New User'
+    result = await supertest(app)
+      .put(`/api/users/${result.body._id}`)
+      .send(user)
+    expect(result.status).toBe(200)
+    expect(result.body.name).toBe('New User')
   });
 
-  it("should update a user", async () => {
-    const createRes = await request(app)
-      .post("/api/users")
-      .send(userData);
+  it("should delete the user", async () => {
+    const user = {
+      name: "Test User",
+      email: "Test email",
+      password: 1,
+      content: 1
+    };
 
-    const res = await request(app)
-      .put(`/api/users/${createRes.body._id}`)
-      .send({ user_name: "Updated Name" });
+    let result = await supertest(app)
+      .post(`/api/users`)
+      .send(user)
+    expect(result.status).toBe(201)
 
-    expect(res.status).toBe(200);
-    expect(res.body.user_name).toBe("Updated Name");
+    user.name = 'New User'
+    result = await supertest(app)
+      .delete(`/api/users/${result.body._id}`)
+      .send()
+    expect(result.status).toBe(200)
+    expect(result.body.name).toBe('Test User')
   });
 
-  it("should return 404 when updating non-existing user", async () => {
-    const res = await request(app)
-      .put("/api/users/64b7f0000000000000000000")
-      .send({ user_name: "No User" });
+  it("should return 404 if user is invalid/not found", async () => {
+        const user = {
+            name: "Test User",
+            email: "Test email",
+            password: -1,
+            content: 0
+        };
 
-    expect(res.status).toBe(404);
+        await supertest(app)
+            .put(`/api/users/${userId}`)
+            .send(user)
+            .expect(404);
+    });
+  
+  it("should not delete a user not found", async () => {
+    const result = await supertest(app)
+      .delete(`/api/users/6976e898854bf6d42c512e48`)
+      .send()
+    expect(result.status).toBe(404)
   });
 
-  it("should delete a user", async () => {
-    const createRes = await request(app)
-      .post("/api/users")
-      .send(userData);
-
-    const res = await request(app)
-      .delete(`/api/users/${createRes.body._id}`);
-
-    expect(res.status).toBe(200);
-  });
-
-  it("should return 404 when deleting non-existing user", async () => {
-    const res = await request(app)
-      .delete("/api/users/64b7f0000000000000000000");
-
-    expect(res.status).toBe(404);
-  });
 });

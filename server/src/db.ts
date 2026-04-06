@@ -7,7 +7,8 @@ let mongodb: MongoMemoryServer
 
 export async function connectToDatabase() {
   if (process.env.NODE_ENV === "test") {
-    if (mongodb === undefined) {
+    console.log(mongodb)
+    if(mongodb === undefined) {
         mongodb = await MongoMemoryServer.create();
     }
     const uri = mongodb.getUri();

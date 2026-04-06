@@ -1,6 +1,7 @@
 import type { RequestHandler } from "express"
 import Post from "../models/post.ts";
-import User from "../models/users.ts";
+import User from "../models/user.ts";
+import type { SortType } from "./productController.ts";
 
 export const getPosts: RequestHandler = async (req, res) => {
     let params: any = {}
@@ -19,8 +20,23 @@ export const getPosts: RequestHandler = async (req, res) => {
             }]
         }
     }
+  const page = parseInt(req.query?.page as string) || 1
+    const limit = parseInt(req.query?.pagesize as string) || 10
+    const skip = (page - 1) * limit
+    const sort: SortType = {}
+    const sortField = req.query?.sort as string || 'name'
+    const sortDir = parseInt(req.query?.sortdir as string) || 1
+    sort[sortField] = sortDir
     const posts = await Post.find(params)
-    res.send(posts)
+        //@ts-ignore
+        .sort(sort)
+        .skip(skip).limit(limit)
+    const totalCount = await Post.find(params).countDocuments()
+    res.send({
+        posts: posts,
+        totalCount: totalCount,
+        currentPage: page
+    })
 }
 
 export const getPost: RequestHandler = async (req, res) => {
@@ -53,7 +69,7 @@ export const addPost: RequestHandler = async (req, res) => {
             content: req.body.content,
             published: req.body.published,
             user_id: user_id,
-            username: user.name
+            username: user.user_name
         })
         console.log('Created post:', post);
 
@@ -102,10 +118,3 @@ export const deletePost: RequestHandler = async (req, res) => {
     console.log('Deleted post:', result);
     res.send(result)
 }
-
-
-
-
-
-
-
