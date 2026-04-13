@@ -133,7 +133,7 @@ function Products() {
                             <TableCell component="th" scope="row">
                                 {product.name}
                             </TableCell>
-                            <TableCell>{product.description}</TableCell>
+                            <TableCell><div dangerouslySetInnerHTML={{ __html: product.description }}></div></TableCell>
                             <TableCell align="right">{product.price}</TableCell>
                             <TableCell align="right">{product.qty}</TableCell>
                             <TableCell>

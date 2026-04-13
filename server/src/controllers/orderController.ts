@@ -17,6 +17,11 @@ export const getOrders: RequestHandler = async (req, res) => {
                     $regex: req.query.find,
                     $options: "i"
                 }
+              }, {
+                "items.product_name": {
+                    $regex: req.query.find,
+                    $options: "i"
+                }
             }]
         }
     }

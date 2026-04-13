@@ -1,8 +1,9 @@
 import { useLocation, useNavigate, useParams } from "react-router"
 
 import { Box, Button, TextField, Typography } from "@mui/material"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { createProduct, updateProduct } from "../services/ProductsService"
+import { Editor } from "@tinymce/tinymce-react"
 
 function ProductsAddEdit() {
 
@@ -11,6 +12,8 @@ function ProductsAddEdit() {
     const location = useLocation()
     // console.log(location.state)
     const isNew = id === 'new'
+    const editorRef = useRef(null)
+    
 
     const [product, setProduct] = useState(isNew ? {
         name: '',
@@ -112,21 +115,35 @@ function ProductsAddEdit() {
             helperText={errors.name?.message}
             sx={{ m: 1 }}
         />
-        <TextField
-            id="description"
-            fullWidth
-            label="Description"
-            variant="outlined"
-            value={product.description}
-            onChange={event => {
-                setProduct({
-                    ...product, description: event.target.value
-                })
-            }}
-            error={errors.name !== undefined}
-            helperText={errors.name?.message}
-            sx={{ m: 1 }}
-        />
+       <Box sx={{ ml: 1 }}>
+            <Editor
+                tinymceScriptSrc={`/tinymce/tinymce.min.js`}
+                onInit={(_evt: any, editor: any) => editorRef.current = editor}
+                value={product.description}
+                onEditorChange={(content: string) => {
+                    setProduct({
+                        ...product, description: content
+                    })
+                }}
+                init={{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount', 'charmap', 'emoticons'
+                    ],
+                    toolbar: 'undo redo fullscreen | bold italic underline cut copy paste | link unlink strikethrough superscript subscript | ' +
+                        'highlight forecolor backcolor removeformat search  | ' +
+                        'align numlist bullist outdent indent image media | ' +
+                        'styles fontsizeinput lineheight | ' +
+                        'table hr charmap emoticons anchor | ' +
+                        'detectverse code preview help',
+                    toolbar_mode: 'sliding',
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                }}
+            />
+        </Box>
         <TextField
             id="price"
             fullWidth
