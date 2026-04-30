@@ -104,7 +104,7 @@ function Orders() {
                                         <td>{(item.price ?? 0) * (item.qty ?? 0)}</td>
                                     </tr>
                                 ))}
-                                </tbody>    
+                                </tbody>
                                 </table>
                             </TableCell>
                             <TableCell align="right">{order.total_amount}</TableCell>

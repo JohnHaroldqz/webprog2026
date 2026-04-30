@@ -422,3 +422,116 @@
 2026-04-13T05:46:49.203Z [33mwarn[39m: GET /api/users ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
 2026-04-13T05:46:52.143Z [33mwarn[39m: PUT /api/orders/6995711c95e0b18ebba150f5 ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
 2026-04-13T05:46:52.165Z [33mwarn[39m: GET /api/orders?find= ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-13T05:54:13.694Z [33mwarn[39m: GET /api/products?find=&page=1&pagesize=5&sort=name&sortdir=1 ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-13T05:54:18.384Z [33mwarn[39m: GET /api/orders?find= ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-13T05:54:19.903Z [33mwarn[39m: GET /api/products?find=&page=1&pagesize=5&sort=name&sortdir=1 ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-13T05:54:20.547Z [33mwarn[39m: GET /api/orders?find= ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-13T05:54:21.069Z [33mwarn[39m: GET /api/posts?find=&page=1&pagesize=5&sort=name&sortdir=1 ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-13T05:54:24.751Z [33mwarn[39m: GET /api/products?find=&page=1&pagesize=5&sort=name&sortdir=1 ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-27T04:29:09.154Z [33mwarn[39m: GET /api/products?find=&page=1&pagesize=5&sort=name&sortdir=1 ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-27T04:29:09.943Z [33mwarn[39m: GET /api/orders?find= ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-27T04:29:10.529Z [33mwarn[39m: GET /api/posts?find=&page=1&pagesize=5&sort=name&sortdir=1 ::1 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+2026-04-27T05:18:25.888Z [33mwarn[39m: GET /api/products/69eef1a18ae0657c5f756774 ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:18:25.937Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:18:31.394Z [33mwarn[39m: GET /api/products/69eef1a7dc0ef429d943b54b ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:18:31.421Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:18:43.080Z [33mwarn[39m: GET /api/products/69eef1b3b72571f861985030 ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:18:43.101Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:18:54.667Z [33mwarn[39m: GET /api/products/69eef1bedda0cc384ab94755 ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:18:54.684Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:20:38.518Z [33mwarn[39m: GET /api/products/69eef226598f28aba4336f60 ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:20:38.542Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:20:41.524Z [33mwarn[39m: GET /api/products/69eef22953fe696b3d39b61f ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:20:41.554Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:20:48.267Z [33mwarn[39m: GET /api/products/69eef230b257201689acfeb0 ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:20:48.292Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:21:18.711Z [33mwarn[39m: GET /api/products/69eef24e84e459666eed0088 ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:21:18.736Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:22:03.043Z [33mwarn[39m: GET /api/products/69eef27b067a7a18e309b5c0 ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:22:03.072Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:22:18.530Z [33mwarn[39m: GET /api/products/69eef28ad3c019626b00dcec ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:22:18.573Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:24:24.998Z [33mwarn[39m: GET /api/products/69eef308191efba6da82c8fd ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:24:25.023Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:24:31.126Z [33mwarn[39m: GET /api/products/69eef30fe2019fb115ac957c ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:24:31.174Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:24:34.458Z [33mwarn[39m: GET /api/products/69eef31289bc1f2d2c9c5728 ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:24:34.500Z [33mwarn[39m: GET /api/products ::ffff:127.0.0.1 "undefined"
+2026-04-27T05:35:46.235Z [31merror[39m: [object Object]
+2026-04-30T07:02:51.589Z [31merror[39m: [object Object]
+2026-04-30T07:04:15.840Z [31merror[39m: [object Object]
+2026-04-30T07:07:20.953Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 56 (line 4 column 5)
+2026-04-30T07:07:37.364Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 51 (line 4 column 5)
+2026-04-30T07:07:45.974Z [31merror[39m: [object Object]
+2026-04-30T07:07:46.204Z [31merror[39m: [object Object]
+2026-04-30T07:07:52.562Z [31merror[39m: [object Object]
+2026-04-30T07:07:53.364Z [31merror[39m: [object Object]
+2026-04-30T07:07:56.890Z [31merror[39m: [object Object]
+2026-04-30T07:08:03.698Z [31merror[39m: [object Object]
+2026-04-30T07:08:03.753Z [31merror[39m: [object Object]
+2026-04-30T07:08:06.402Z [31merror[39m: [object Object]
+2026-04-30T07:08:06.415Z [31merror[39m: [object Object]
+2026-04-30T07:08:16.272Z [31merror[39m: [object Object]
+2026-04-30T07:10:18.764Z [31merror[39m: [object Object]
+2026-04-30T07:10:18.777Z [31merror[39m: [object Object]
+2026-04-30T07:10:22.603Z [31merror[39m: [object Object]
+2026-04-30T07:10:22.614Z [31merror[39m: [object Object]
+2026-04-30T07:10:23.579Z [31merror[39m: [object Object]
+2026-04-30T07:10:23.590Z [31merror[39m: [object Object]
+2026-04-30T07:11:11.362Z [31merror[39m: [object Object]
+2026-04-30T07:11:11.373Z [31merror[39m: [object Object]
+2026-04-30T07:11:16.448Z [31merror[39m: [object Object]
+2026-04-30T07:11:17.187Z [31merror[39m: [object Object]
+2026-04-30T07:11:20.021Z [31merror[39m: [object Object]
+2026-04-30T07:11:20.033Z [31merror[39m: [object Object]
+2026-04-30T07:11:22.626Z [31merror[39m: [object Object]
+2026-04-30T07:11:22.637Z [31merror[39m: [object Object]
+2026-04-30T07:11:40.952Z [31merror[39m: [object Object]
+2026-04-30T07:11:41.515Z [31merror[39m: [object Object]
+2026-04-30T07:11:46.111Z [31merror[39m: [object Object]
+2026-04-30T07:11:46.124Z [31merror[39m: [object Object]
+2026-04-30T07:12:16.808Z [31merror[39m: [object Object]
+2026-04-30T07:12:19.160Z [31merror[39m: [object Object]
+2026-04-30T07:13:22.694Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 51 (line 4 column 5)
+2026-04-30T07:13:23.129Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 51 (line 4 column 5)
+2026-04-30T07:13:23.497Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 51 (line 4 column 5)
+2026-04-30T07:13:23.969Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 51 (line 4 column 5)
+2026-04-30T07:13:24.121Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 51 (line 4 column 5)
+2026-04-30T07:13:24.281Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 51 (line 4 column 5)
+2026-04-30T07:13:24.409Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 51 (line 4 column 5)
+2026-04-30T07:13:24.560Z [31merror[39m: Expected ',' or '}' after property value in JSON at position 51 (line 4 column 5)
+2026-04-30T07:16:57.763Z [31merror[39m: [object Object]
+2026-04-30T07:22:16.680Z [31merror[39m: [object Object]
+2026-04-30T07:22:16.692Z [31merror[39m: [object Object]
+2026-04-30T07:24:11.322Z [31merror[39m: [object Object]
+2026-04-30T07:24:11.334Z [31merror[39m: [object Object]
+2026-04-30T07:26:02.275Z [31merror[39m: [object Object]
+2026-04-30T07:27:55.314Z [31merror[39m: [object Object]
+2026-04-30T07:27:56.322Z [31merror[39m: [object Object]
+2026-04-30T07:27:56.336Z [31merror[39m: [object Object]
+2026-04-30T07:28:01.458Z [31merror[39m: [object Object]
+2026-04-30T07:28:01.469Z [31merror[39m: [object Object]
+2026-04-30T07:28:03.229Z [31merror[39m: [object Object]
+2026-04-30T07:28:03.240Z [31merror[39m: [object Object]
+2026-04-30T07:28:04.476Z [31merror[39m: [object Object]
+2026-04-30T07:28:04.486Z [31merror[39m: [object Object]
+2026-04-30T07:28:04.819Z [31merror[39m: [object Object]
+2026-04-30T07:28:04.830Z [31merror[39m: [object Object]
+2026-04-30T07:28:05.002Z [31merror[39m: [object Object]
+2026-04-30T07:28:05.014Z [31merror[39m: [object Object]
+2026-04-30T07:28:05.179Z [31merror[39m: [object Object]
+2026-04-30T07:28:05.189Z [31merror[39m: [object Object]
+2026-04-30T07:28:05.372Z [31merror[39m: [object Object]
+2026-04-30T07:28:05.383Z [31merror[39m: [object Object]
+2026-04-30T07:28:05.548Z [31merror[39m: [object Object]
+2026-04-30T07:28:05.559Z [31merror[39m: [object Object]
+2026-04-30T07:28:07.651Z [31merror[39m: [object Object]
+2026-04-30T07:28:07.662Z [31merror[39m: [object Object]
+2026-04-30T07:33:08.210Z [31merror[39m: [object Object]
+2026-04-30T07:33:08.222Z [31merror[39m: [object Object]
+2026-04-30T07:33:10.678Z [31merror[39m: [object Object]
+2026-04-30T07:33:10.691Z [31merror[39m: [object Object]
+2026-04-30T07:33:11.310Z [31merror[39m: [object Object]
+2026-04-30T07:33:11.323Z [31merror[39m: [object Object]
+2026-04-30T07:33:14.012Z [31merror[39m: [object Object]
+2026-04-30T07:33:14.025Z [31merror[39m: [object Object]

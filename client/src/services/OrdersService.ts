@@ -1,8 +1,10 @@
+import authHeader from "./authHeader";
 import httpClient from "./HttpCommon";
 
 export const listOrders = (params: any) => {
     return httpClient.get('/orders', {
         params: params,
+        headers: authHeader()
     })
 };
 
@@ -11,9 +13,13 @@ export const getOrder = (id: string) => {
 }
 
 export const createOrder = (order: any) => {
-    return httpClient.post('/orders', order)
+    return httpClient.post('/orders', order, {
+        headers: authHeader()
+    })
 }
 
 export const updateOrder = (id: string, order: any) => {
-    return httpClient.put(`/orders/${id}`, order)
+    return httpClient.put(`/orders/${id}`, order, {
+        headers: authHeader()
+    })
 }

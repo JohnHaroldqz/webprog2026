@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express"
 import Order from "../models/order.ts";
-import User from "../models/user.ts";
+import User from "../models/users.ts";
 import Product from "../models/product.ts";
 
 export const getOrders: RequestHandler = async (req, res) => {
@@ -17,7 +17,7 @@ export const getOrders: RequestHandler = async (req, res) => {
                     $regex: req.query.find,
                     $options: "i"
                 }
-              }, {
+            }, {
                 "items.product_name": {
                     $regex: req.query.find,
                     $options: "i"
@@ -33,20 +33,20 @@ export const getOrder: RequestHandler = async (req, res) => {
     const id = req.params.id
     console.log(id)
     const order = await Order.findById(id)
-    console.log('Found Order:', order);
+    console.log('Found order:', order);
     res.send(order)
 }
 
 export const addOrder: RequestHandler = async (req, res) => {
     console.log(req.body)
     // use validation framework later
-    if (!req.body.user_id || !req.body.items || !Array.isArray(req.body.items) || req.body.items.length === 0) {
+    if (req.body.user_id === undefined || req.body.user_id === '' || req.body.items === undefined) {
         res.status(422).send()
         return
     }
     try {
         const user_id = req.body.user_id
-        const user = await User.findById(req.body.user_id)
+        const user = await User.findById(user_id)
         if (!user) {
             res.status(404).json({
                 error: true,
@@ -54,30 +54,33 @@ export const addOrder: RequestHandler = async (req, res) => {
             })
             return
         }
+        // get product info
         const items = req.body.items
-        let total_amount = 0
+        let total = 0
+        // don't use items.forEach as it won't work
         for (const item of items) {
             const product_id = item.product_id
-            const product = await Product.findById(item.product_id)
+            const product = await Product.findById(product_id)
             if (!product) {
                 res.status(404).json({
                     error: true,
-                    message: `Product id ${item.product_id} not found.`
+                    message: `Product id ${product_id} not found.`
                 })
                 return
             }
             item.product_name = product.name
             item.price = product.price
-            total_amount += item.qty * item.price
+            total += item.price * item.qty
             console.log(item)
         }
         const order = await Order.create({
+            status: req.body.status ?? 'New',
             user_id: user_id,
-            username: user.user_name,
-            items: items,
-            total_amount: total_amount
+            username: user.name,
+            items: req.body.items,
+            total_amount: total
         })
-        console.log('Created Order:', order);
+        console.log('Created order:', order);
 
         res.status(201).send(order)
     } catch (err: any) {
@@ -102,34 +105,33 @@ export const updateOrder: RequestHandler = async (req, res) => {
     const id = req.params.id
     console.log(id)
     console.log(req.body)
-
+    // get product info
     const items = req.body.items
-    let total_amount = 0
+    let total = 0
+    // don't use items.forEach as it won't work
     for (const item of items) {
         const product_id = item.product_id
-        const product = await Product.findById(item.product_id)
+        const product = await Product.findById(product_id)
         if (!product) {
             res.status(404).json({
                 error: true,
-                message: `Product id ${item.product_id} not found.`
+                message: `Product id ${product_id} not found.`
             })
             return
         }
         item.product_name = product.name
         item.price = product.price
-        total_amount += item.qty * item.price
+        total += item.price * item.qty
         console.log(item)
     }
-
     const order = await Order.findByIdAndUpdate(id, {
         status: req.body.status,
-        items: req.body.items,
-        total_amount: req.body.total_amount,
-        //user_id: req.body.user_id,
+        items: items,
+        total_amount: total,
     }, {
         returnDocument: 'after'
     })
-    console.log('Updated Order:', order);
+    console.log('Updated order:', order);
     if (order === null)
         res.status(404).send()
     else
@@ -140,6 +142,6 @@ export const deleteOrder: RequestHandler = async (req, res) => {
     const id = req.params.id
     console.log(req.body)
     const result = await Order.findByIdAndDelete(id)
-    console.log('Deleted Order:', result);
+    console.log('Deleted order:', result);
     res.send(result)
 }

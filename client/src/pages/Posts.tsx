@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper';
 import { listPosts } from "../services/PostsService";
 import { parseISO } from "date-fns/parseISO";
 import { format } from "date-fns/format";
+import { session } from "../auth/Session";
 
 export type PostType = {
     _id: string,
@@ -97,7 +98,9 @@ function Posts() {
 
     return <Box>
         <h2>Blogs</h2>
-        <Button variant="outlined" onClick={() => navigate(`/blog/new`)}>New</Button>
+        {session.email && (
+            <Button variant="outlined" onClick={() => navigate(`/blog/new`)}>New</Button>
+        )}
         <TextField
             id="filter"
             label="Filter"
@@ -141,7 +144,9 @@ function Posts() {
                                 <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
                             </TableCell>
                             <TableCell>
-                                <Button onClick={() => navigate(`/blog/${post._id}`, { state: post })}>Edit</Button>
+                                {session.email && (
+                                    <Button onClick={() => navigate(`/blog/${post._id}`, { state: post })}>Edit</Button>
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}
@@ -149,9 +154,11 @@ function Posts() {
             </Table>
         </TableContainer>
         <PaginationLine />
-        <Fab color="primary" aria-label="add" onClick={() => navigate("/blog/new")}>
-            <AddIcon />
-        </Fab>
+        {session.email && (
+            <Fab color="primary" aria-label="add" onClick={() => navigate("/blog/new")}>
+                <AddIcon />
+            </Fab>
+        )}
     </Box>
 }
 

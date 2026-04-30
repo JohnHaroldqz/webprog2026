@@ -1,7 +1,8 @@
 import type { RequestHandler } from "express"
 import Post from "../models/post.ts";
-import User from "../models/user.ts";
+import User from "../models/users.ts";
 import type { SortType } from "./productController.ts";
+import { getAuthUserId } from "../middlewares/requireAuth.ts";
 
 export const getPosts: RequestHandler = async (req, res) => {
     let params: any = {}
@@ -20,7 +21,7 @@ export const getPosts: RequestHandler = async (req, res) => {
             }]
         }
     }
-  const page = parseInt(req.query?.page as string) || 1
+    const page = parseInt(req.query?.page as string) || 1
     const limit = parseInt(req.query?.pagesize as string) || 10
     const skip = (page - 1) * limit
     const sort: SortType = {}
@@ -31,6 +32,7 @@ export const getPosts: RequestHandler = async (req, res) => {
         //@ts-ignore
         .sort(sort)
         .skip(skip).limit(limit)
+    //console.log(posts.length)
     const totalCount = await Post.find(params).countDocuments()
     res.send({
         posts: posts,
@@ -69,7 +71,7 @@ export const addPost: RequestHandler = async (req, res) => {
             content: req.body.content,
             published: req.body.published,
             user_id: user_id,
-            username: user.user_name
+            username: user.name
         })
         console.log('Created post:', post);
 
@@ -94,8 +96,20 @@ export const addPost: RequestHandler = async (req, res) => {
 
 export const updatePost: RequestHandler = async (req, res) => {
     const id = req.params.id
-    console.log(id)
-    console.log(req.body)
+    const authId = getAuthUserId(req.headers.authorization || '')
+    const origPost = await Post.findById(id).select('user_id')
+    const userId = origPost?.user_id
+    //console.log(id)
+    console.log(authId)
+    console.log(userId)
+    if (authId !== userId) {
+        res.status(401).json({
+            error: true,
+            message: "Only the author can edit his or her own posts."
+        });
+        return
+    }
+    //console.log(req.body)
     const post = await Post.findByIdAndUpdate(id, {
         title: req.body.title,
         content: req.body.content,
@@ -104,7 +118,7 @@ export const updatePost: RequestHandler = async (req, res) => {
     }, {
         returnDocument: 'after'
     })
-    console.log('Updated post:', post);
+    //console.log('Updated post:', post);
     if (post === null)
         res.status(404).send()
     else

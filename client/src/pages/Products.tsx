@@ -12,6 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import { listProducts } from "../services/ProductsService";
+import { session } from "../auth/Session";
 
 export type ProductType = {
     _id: string,
@@ -95,7 +96,9 @@ function Products() {
 
     return <Box>
         <h2>Products</h2>
-        <Button variant="outlined" onClick={() => navigate(`/products/new`)}>New</Button>
+        {session.email && (
+            <Button variant="outlined" onClick={() => navigate(`/products/new`)}>New</Button>
+        )}
         <TextField
             id="filter"
             label="Filter"
@@ -124,7 +127,7 @@ function Products() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {products?.map((product, index) => (
+                    {products.map((product, index) => (
                         <TableRow
                             key={index}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -133,11 +136,13 @@ function Products() {
                             <TableCell component="th" scope="row">
                                 {product.name}
                             </TableCell>
-                            <TableCell><div dangerouslySetInnerHTML={{ __html: product.description }}></div></TableCell>
+                            <TableCell>{product.description}</TableCell>
                             <TableCell align="right">{product.price}</TableCell>
                             <TableCell align="right">{product.qty}</TableCell>
                             <TableCell>
-                                <Button onClick={() => navigate(`/products/${product._id}`, { state: product })}>Edit</Button>
+                                {session.email && (
+                                    <Button onClick={() => navigate(`/products/${product._id}`, { state: product })}>Edit</Button>
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}
@@ -145,9 +150,11 @@ function Products() {
             </Table>
         </TableContainer>
         <PaginationLine />
-        <Fab color="primary" aria-label="add" onClick={() => navigate("/products/new")}>
-            <AddIcon />
-        </Fab>
+        {session.email && (
+            <Fab color="primary" aria-label="add" onClick={() => navigate("/products/new")}>
+                <AddIcon />
+            </Fab>
+        )}
     </Box>
 }
 
